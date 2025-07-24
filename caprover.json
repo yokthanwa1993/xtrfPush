@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "dockerfilePath": "./Dockerfile",
+  "buildArguments": {},
+  "instructions": [
+    "FROM node:18-alpine",
+    "WORKDIR /app",
+    "COPY package*.json ./",
+    "RUN npm ci --omit=dev",
+    "COPY . .",
+    "EXPOSE 3000 4000",
+    "CMD [\"npm\", \"start\"]"
+  ],
+  "imageName": "ntfy-caprover",
+  "imageTag": "latest",
+  "expose": "3000/tcp",
+  "ports": [
+    "3000:3000",
+    "4000:4000"
+  ],
+  "volumes": [],
+  "environmentVariables": [
+    {
+      "key": "NTFY_SERVER",
+      "value": "https://ntfy.sh"
+    },
+    {
+      "key": "NTFY_TOPIC",
+      "value": "caprover-notifications"
+    },
+    {
+      "key": "NTFY_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "PORT",
+      "value": "3000"
+    }
+  ],
+  "notExposeAsWebApp": false,
+  "containerHttpPort": "3000",
+  "description": "ntfy notification service for CapRover with REST and GraphQL APIs",
+  "documentation": "https://github.com/binwiederhier/ntfy",
+  "forceExpose": false,
+  "customDomain": "",
+  "hasPersistentData": false,
+  "caproverOneClickApp": {
+    "instructions": {
+      "start": "ntfy notification service for CapRover deployments with REST and GraphQL APIs",
+      "end": "Service is ready! You can now send notifications via ntfy.\n\nREST API: http://your-app.your-domain.com\nGraphQL API: http://your-app.your-domain.com/graphql\nHealth Check: http://your-app.your-domain.com/health"
+    },
+    "variables": [
+      {
+        "id": "$$NTFY_SERVER",
+        "label": "ntfy Server URL",
+        "defaultValue": "https://ntfy.sh",
+        "description": "The ntfy server URL (use https://ntfy.sh for public server)"
+      },
+      {
+        "id": "$$NTFY_TOPIC",
+        "label": "ntfy Topic",
+        "defaultValue": "caprover-notifications",
+        "description": "The topic name for notifications (create this topic in ntfy)"
+      },
+      {
+        "id": "$$NTFY_TOKEN",
+        "label": "ntfy Token (Optional)",
+        "defaultValue": "",
+        "description": "Bearer token for private topics (leave empty for public topics)"
+      },
+      {
+        "id": "$$PORT",
+        "label": "Server Port",
+        "defaultValue": "3000",
+        "description": "Port for the REST API server"
+      }
+    ]
+  }
+} 
