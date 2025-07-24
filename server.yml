@@ -1,5 +1,5 @@
 # ntfy server configuration
-base-url: "https://ntfy.yourdomain.com"
+# Base URL will be set via environment variable NTFY_BASE_URL
 listen-http: ":80"
 cache-file: "/var/lib/ntfy/cache.db"
 auth-file: "/var/lib/ntfy/auth.db"
@@ -32,3 +32,6 @@ attachment-expiry-duration: "3h"
 # Logging
 log-level: "INFO"
 log-format: "text"
+
+# Health check
+health-check-enabled: true

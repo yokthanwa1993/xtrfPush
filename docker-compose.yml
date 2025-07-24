@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # ntfy Server
+  ntfy-server:
+    image: binwiederhier/ntfy:latest
+    command: serve
+    environment:
+      - NTFY_BASE_URL=${NTFY_BASE_URL:-https://ntfy.yourdomain.com}
+      - NTFY_LISTEN_HTTP=:80
+      - NTFY_CACHE_FILE=/var/lib/ntfy/cache.db
+      - NTFY_AUTH_FILE=/var/lib/ntfy/auth.db
+      - NTFY_AUTH_DEFAULT_ACCESS=read-write
+      - NTFY_BEHIND_PROXY=true
+      - NTFY_ENABLE_SIGNUP=true
+      - NTFY_ENABLE_LOGIN=true
+      - NTFY_WEB_ROOT=app
+      - NTFY_CORS_ALLOW_ORIGIN=*
+    volumes:
+      - ./server.yml:/etc/ntfy/server.yml:ro
+      - ntfy_data:/var/lib/ntfy
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Push Service API
+  push-service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NTFY_SERVER=http://ntfy-server:80
+      - NTFY_TOPIC=${NTFY_TOPIC:-push}
+      - NTFY_TOKEN=${NTFY_TOKEN:-}
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ntfy-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ntfy_data:
