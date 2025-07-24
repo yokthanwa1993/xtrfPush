@@ -1,0 +1,34 @@
+# ntfy server configuration
+base-url: "https://ntfy.yourdomain.com"
+listen-http: ":80"
+cache-file: "/var/lib/ntfy/cache.db"
+auth-file: "/var/lib/ntfy/auth.db"
+auth-default-access: "read-write"
+behind-proxy: true
+enable-signup: true
+enable-login: true
+enable-reservations: false
+
+# Web app settings
+web-root: "app"
+
+# CORS settings
+cors-allow-origin: "*"
+
+# Rate limiting
+visitor-request-limit-burst: 60
+visitor-request-limit-replenish: "5s"
+
+# Message limits
+message-limit: 4096
+message-size-limit: "10M"
+
+# Attachment settings
+attachment-cache-dir: "/var/lib/ntfy/attachments"
+attachment-total-size-limit: "5G"
+attachment-file-size-limit: "15M"
+attachment-expiry-duration: "3h"
+
+# Logging
+log-level: "INFO"
+log-format: "text"

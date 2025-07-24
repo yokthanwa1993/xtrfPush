@@ -1,0 +1,13 @@
+FROM binwiederhier/ntfy:latest
+
+# Copy configuration
+COPY server.yml /etc/ntfy/server.yml
+
+# Create data directory
+RUN mkdir -p /var/lib/ntfy
+
+# Expose port
+EXPOSE 80
+
+# Start ntfy server
+CMD ["serve", "--config", "/etc/ntfy/server.yml"]

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "dockerfilePath": "./Dockerfile.ntfy",
+  "imageName": "binwiederhier/ntfy:latest",
+  "instructions": [
+    "FROM binwiederhier/ntfy:latest",
+    "COPY server.yml /etc/ntfy/server.yml",
+    "EXPOSE 80",
+    "CMD [\"serve\"]"
+  ],
+  "ports": [
+    "80:80"
+  ],
+  "volumes": [
+    "/var/lib/ntfy:/var/lib/ntfy"
+  ],
+  "environmentVariables": [
+    {
+      "key": "NTFY_BASE_URL",
+      "value": "https://ntfy.yourdomain.com"
+    },
+    {
+      "key": "NTFY_LISTEN_HTTP",
+      "value": ":80"
+    },
+    {
+      "key": "NTFY_CACHE_FILE",
+      "value": "/var/lib/ntfy/cache.db"
+    },
+    {
+      "key": "NTFY_AUTH_FILE",
+      "value": "/var/lib/ntfy/auth.db"
+    },
+    {
+      "key": "NTFY_AUTH_DEFAULT_ACCESS",
+      "value": "read-write"
+    }
+  ],
+  "notExposeAsWebApp": false,
+  "containerHttpPort": "80",
+  "description": "ntfy notification server",
+  "hasPersistentData": true
+}
